@@ -113,8 +113,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 #page-elig .result-count{padding:8px 16px 0;font-size:.8rem;color:#666;max-width:600px;margin:0 auto}
 input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 input[type="number"]{-moz-appearance:textfield}
+.top-banner{width:100%;height:auto;display:block}
+.profile-section{background:#fff;padding:20px 16px;text-align:center;border-bottom:1px solid #e5e5e5}
+.profile-section .tagline{font-size:17px;font-weight:800;color:#dc2626;line-height:1.4;margin-bottom:12px}
+.profile-section .features{list-style:none;padding:0;margin:0 0 14px;display:inline-block;text-align:left}
+.profile-section .features li{font-size:14px;color:#333;padding:5px 0;line-height:1.5}
+.profile-section .features li::before{content:'✅';margin-right:8px}
+.profile-section .location{font-size:13px;color:#888;margin-bottom:10px}
+.profile-section .cta-line{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.profile-section .quote{font-size:13px;color:#888;font-style:italic;margin-top:8px}.wa-profile-btn{display:block;width:auto;max-width:280px;margin:12px auto 8px;padding:14px 28px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;text-align:center;text-decoration:none;cursor:pointer;transition:all .2s}
+.wa-profile-btn:hover{background:#1ebe5b;transform:scale(1.02)}
+
+@media(min-width:600px){.profile-section{max-width:700px;margin:0 auto}}
+
 @media(min-width:600px){.model-grid{grid-template-columns:repeat(4,1fr);max-width:700px;margin:0 auto}
 .section,.form-section.show,.selected-model.show,.result-card.show,.elig-warning.show{max-width:600px;margin-left:auto;margin-right:auto}}
+@media(min-width:768px){.top-banner{max-width:900px;margin:0 auto}}
 @media(min-width:480px){#page-elig .models-grid{grid-template-columns:1fr 1fr 1fr}}
 /* Desktop popup for eligibility detail */
 @media(min-width:768px){#page-elig .detail-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.95);opacity:0;bottom:auto;right:auto;width:90%;max-width:1200px;max-height:85vh;border-radius:16px;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;padding:0 0 16px}
@@ -124,8 +138,6 @@ input[type="number"]{-moz-appearance:textfield}
 </style>
 </head>
 <body>
-<!-- HTML will be appended in next call -->
-
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('loan')">🚗 Loan Calculator</button>
   <button class="tab-btn" onclick="switchTab('elig')">✅ Semak Kelayakan</button>
@@ -133,6 +145,22 @@ input[type="number"]{-moz-appearance:textfield}
 
 <div class="tab-page active" id="page-loan">
 <div class="header"><h1>🚗 Proton Loan Calculator</h1><p>Kira anggaran bayaran bulanan ikut model & varian</p></div>
+<img src="banner.jpg" alt="Team Proton TwentyOne - Closing Deals. Creating Dreams." class="top-banner">
+<div class="profile-section">
+  <div class="tagline">🔥 NAK BELI PROTON TAPI TAK TAHU NAK MULA DI MANA? 🔥</div>
+  <p style="font-size:14px;color:#555;margin-bottom:12px">Tak perlu keluar rumah! Dengan <strong>Team Proton TwentyOne</strong>, anda boleh mohon terus dari rumah.</p>
+  <ul class="features">
+    <li>Semakan kelayakan PERCUMA</li>
+    <li>Proses permohonan mudah</li>
+    <li>Kami uruskan dari A-Z</li>
+    <li>Follow-up sehingga lulus</li>
+    <li>Khidmat nasihat profesional</li>
+  </ul>
+  <div class="location">📍 Proton Siang Hin Auto Melawati</div>
+  <a href="https://wa.me/60172393593?text=Hai!%20Nak%20tanya%20pasal%20Proton" class="wa-profile-btn" target="_blank">📲 WhatsApp Kami Sekarang</a>
+  <div class="quote">"Kereta impian anda hanya beberapa langkah sahaja lagi." 🚘✨</div>
+</div>
+
 <div class="section" id="stepModel"><div class="step-label">Langkah 1</div><div class="section-title">Pilih Model Proton</div><div class="model-grid" id="modelGrid"></div></div>
 <div class="selected-model" id="selectedModel"><button class="change-btn" onclick="resetModel()">✕ Tukar</button><img id="selectedImg" src="" alt=""><div class="info"><div class="name" id="selectedName"></div><div class="price-tag" id="selectedPrice"></div></div></div>
 <div class="form-section" id="formSection">
@@ -153,6 +181,22 @@ input[type="number"]{-moz-appearance:textfield}
 
 <div class="tab-page" id="page-elig">
 <div class="header"><h1>🚗 Kereta Sesuai Ikut Gaji</h1><p>Masukkan gaji bersih & semak model Proton yang anda mampu</p></div>
+<img src="banner.jpg" alt="Team Proton TwentyOne - Closing Deals. Creating Dreams." class="top-banner">
+<div class="profile-section">
+  <div class="tagline">🔥 NAK BELI PROTON TAPI TAK TAHU NAK MULA DI MANA? 🔥</div>
+  <p style="font-size:14px;color:#555;margin-bottom:12px">Tak perlu keluar rumah! Dengan <strong>Team Proton TwentyOne</strong>, anda boleh mohon terus dari rumah.</p>
+  <ul class="features">
+    <li>Semakan kelayakan PERCUMA</li>
+    <li>Proses permohonan mudah</li>
+    <li>Kami uruskan dari A-Z</li>
+    <li>Follow-up sehingga lulus</li>
+    <li>Khidmat nasihat profesional</li>
+  </ul>
+  <div class="location">📍 Proton Siang Hin Auto Melawati</div>
+  <a href="https://wa.me/60172393593?text=Hai!%20Nak%20tanya%20pasal%20Proton" class="wa-profile-btn" target="_blank">📲 WhatsApp Kami Sekarang</a>
+  <div class="quote">"Kereta impian anda hanya beberapa langkah sahaja lagi." 🚘✨</div>
+</div>
+
 <div class="salary-section"><div class="salary-card"><label>Gaji Bersih Anda</label><div class="salary-input-wrap"><span>RM</span><input type="number" id="eligSalaryInput" placeholder="cth: 3000" min="1000" max="50000" step="100"></div><div class="tenure-selector"><button class="tenure-btn" data-years="5">5 Tahun</button><button class="tenure-btn active" data-years="7">7 Tahun</button><button class="tenure-btn" data-years="9">9 Tahun</button></div><div class="disclaimer">Anggaran sahaja. Tertakluk kepada penilaian kredit bank.</div></div></div>
 <div id="eligResultCount" class="result-count"></div><div class="models-grid" id="eligModelsGrid"></div>
 <div class="detail-overlay" id="eligOverlay"></div><div class="detail-panel" id="eligPanel"><div class="detail-handle"></div><button class="detail-close" id="eligClose">✕</button><div class="detail-content" id="eligDetailContent"></div></div>
@@ -173,23 +217,19 @@ function switchTab(tab) {
 }
 
 var MODELS = [
-  {id:'saga',name:'Saga',priceFrom:34800,priceTo:45800,img:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',variants:[{name:'1.3L Standard MT',price:34800},{name:'1.3L Standard AT',price:36800},{name:'1.3L Premium AT',price:39800},{name:'1.3L Premium S AT',price:42800},{name:'1.3L Ace AT',price:45800}]},
-  {id:'persona',name:'Persona',priceFrom:47800,priceTo:59800,img:'https://cms-assets.proton.com/proton-cms-blob/media/xvldb2h0/model-persona.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/v3xnuirg/proton_persona_1440x640.jpg',variants:[{name:'1.6L Standard CVT',price:47800},{name:'1.6L Executive CVT',price:51800},{name:'1.6L Premium CVT',price:55800},{name:'1.6L Premium S CVT',price:59800}]},
-  {id:'iriz',name:'Iriz',priceFrom:40800,priceTo:50800,img:'https://cms-assets.proton.com/proton-cms-blob/media/iqalhsmy/model-iriz.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/3jvfz3zg/proton_iriz_1440x640.jpg',variants:[{name:'1.3L Standard CVT',price:40800},{name:'1.3L Executive CVT',price:44800},{name:'1.3L Premium CVT',price:48800},{name:'1.3L Active CVT',price:50800}]},
-  {id:'s70',name:'S70',priceFrom:73800,priceTo:89800,img:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',variants:[{name:'1.5T Executive',price:73800},{name:'1.5T Premium',price:79800},{name:'1.5T Flagship',price:84800},{name:'1.5T Flagship X',price:89800}]},
-  {id:'x50',name:'X50',priceFrom:86800,priceTo:113300,img:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',variants:[{name:'1.5T Standard',price:86800},{name:'1.5T Executive',price:93800},{name:'1.5T Premium',price:101800},{name:'1.5T Flagship',price:113300}]},
-  {id:'x70',name:'X70',priceFrom:98800,priceTo:128800,img:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',variants:[{name:'1.5T Standard',price:98800},{name:'1.5T Executive',price:108800},{name:'1.5T Premium',price:118800},{name:'1.5T Premium X',price:128800}]},
-  {id:'x90',name:'X90',priceFrom:123800,priceTo:143800,img:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',variants:[{name:'1.5T Standard',price:123800},{name:'1.5T Executive',price:130800},{name:'1.5T Premium',price:138800},{name:'1.5T Flagship',price:143800}]}
+  {id:'saga',name:'Saga',priceFrom:40383,priceTo:51635,img:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',variants:[{name:'1.5L Standard 4AT',price:40382.50},{name:'1.5L Executive 4AT',price:46534.50},{name:'1.5L Premium CVT',price:51635.30}]},
+  {id:'s70',name:'S70',priceFrom:76060,priceTo:97591,img:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',variants:[{name:'1.5T Executive',price:76059.80},{name:'1.5T Premium',price:82211.45},{name:'1.5T Flagship',price:92464.15},{name:'1.5T Flagship X',price:97590.50}]},
+  {id:'x50',name:'X50',priceFrom:92286,priceTo:116264,img:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',variants:[{name:'1.5T Executive',price:92286.30},{name:'1.5T Premium',price:104606.65},{name:'1.5T Flagship',price:116263.65}]},
+  {id:'x70',name:'X70',priceFrom:109716,priceTo:123026,img:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',variants:[{name:'1.5T Executive',price:109715.95},{name:'1.5T Premium',price:123026.20}]},
+  {id:'x90',name:'X90',priceFrom:109816,priceTo:126527,img:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',variants:[{name:'1.5T Lite',price:109815.95},{name:'1.5T Prime',price:120193.30},{name:'1.5T Prime X',price:126527.45}]}
 ];
 
 var ELIG_MODELS = [
-  {id:'saga',name:'Proton Saga',tagline:'SMART. SAFE. SEDAN.',category:'Compact Sedan',priceFrom:34800,priceTo:45800,image:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',variants:[{name:'1.3L Standard MT',price:34800},{name:'1.3L Standard AT',price:36800},{name:'1.3L Premium AT',price:39800},{name:'1.3L Premium S AT',price:42800},{name:'1.3L Ace AT',price:45800}]},
-  {id:'persona',name:'Proton Persona',tagline:'PERFECT COMPANION',category:'Sedan',priceFrom:47800,priceTo:59800,image:'https://cms-assets.proton.com/proton-cms-blob/media/v3xnuirg/proton_persona_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/xvldb2h0/model-persona.png',variants:[{name:'1.6L Standard CVT',price:47800},{name:'1.6L Executive CVT',price:51800},{name:'1.6L Premium CVT',price:55800},{name:'1.6L Premium S CVT',price:59800}]},
-  {id:'iriz',name:'Proton Iriz',tagline:'DYNAMIC HATCHBACK',category:'Hatchback',priceFrom:40800,priceTo:50800,image:'https://cms-assets.proton.com/proton-cms-blob/media/3jvfz3zg/proton_iriz_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/iqalhsmy/model-iriz.png',variants:[{name:'1.3L Standard CVT',price:40800},{name:'1.3L Executive CVT',price:44800},{name:'1.3L Premium CVT',price:48800},{name:'1.3L Active CVT',price:50800}]},
-  {id:'s70',name:'Proton S70',tagline:'INTELLIGENT EXECUTIVE SEDAN',category:'Sedan',priceFrom:73800,priceTo:89800,image:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',variants:[{name:'1.5T Executive',price:73800},{name:'1.5T Premium',price:79800},{name:'1.5T Flagship',price:84800},{name:'1.5T Flagship X',price:89800}]},
-  {id:'x50',name:'Proton X50',tagline:'BOLD. SMART. SUV.',category:'SUV',priceFrom:86800,priceTo:113300,image:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',variants:[{name:'1.5T Standard',price:86800},{name:'1.5T Executive',price:93800},{name:'1.5T Premium',price:101800},{name:'1.5T Flagship',price:113300}]},
-  {id:'x70',name:'Proton X70',tagline:'PREMIUM SUV',category:'SUV',priceFrom:98800,priceTo:128800,image:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',variants:[{name:'1.5T Standard',price:98800},{name:'1.5T Executive',price:108800},{name:'1.5T Premium',price:118800},{name:'1.5T Premium X',price:128800}]},
-  {id:'x90',name:'Proton X90',tagline:'PREMIUM 7-SEATER SUV',category:'SUV 7-Seater',priceFrom:123800,priceTo:143800,image:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',variants:[{name:'1.5T Standard',price:123800},{name:'1.5T Executive',price:130800},{name:'1.5T Premium',price:138800},{name:'1.5T Flagship',price:143800}]}
+  {id:'saga',name:'Proton Saga',tagline:'SMART. SAFE. SEDAN.',category:'Compact Sedan',priceFrom:40383,priceTo:51635,image:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',variants:[{name:'1.5L Standard 4AT',price:40382.50},{name:'1.5L Executive 4AT',price:46534.50},{name:'1.5L Premium CVT',price:51635.30}]},
+  {id:'s70',name:'Proton S70',tagline:'INTELLIGENT EXECUTIVE SEDAN',category:'Sedan',priceFrom:76060,priceTo:97591,image:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',variants:[{name:'1.5T Executive',price:76059.80},{name:'1.5T Premium',price:82211.45},{name:'1.5T Flagship',price:92464.15},{name:'1.5T Flagship X',price:97590.50}]},
+  {id:'x50',name:'Proton X50',tagline:'BOLD. SMART. SUV.',category:'SUV',priceFrom:92286,priceTo:116264,image:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',variants:[{name:'1.5T Executive',price:92286.30},{name:'1.5T Premium',price:104606.65},{name:'1.5T Flagship',price:116263.65}]},
+  {id:'x70',name:'Proton X70',tagline:'PREMIUM SUV',category:'SUV',priceFrom:109716,priceTo:123026,image:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',variants:[{name:'1.5T Executive',price:109715.95},{name:'1.5T Premium',price:123026.20}]},
+  {id:'x90',name:'Proton X90',tagline:'PREMIUM 7-SEATER SUV',category:'SUV 7-Seater',priceFrom:109816,priceTo:126527,image:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',variants:[{name:'1.5T Lite',price:109815.95},{name:'1.5T Prime',price:120193.30},{name:'1.5T Prime X',price:126527.45}]}
 ];
 
 var selectedModel=null,selectedVariant=null,currentTenure=7,isUserEditingMonthly=false;
@@ -229,7 +269,7 @@ function updateAll(){
   document.getElementById('rRate').textContent=inp.rate+'%';
   document.getElementById('rTenure').textContent=currentTenure+' thn';
   var msg='Hi, nak tanya pasal Proton '+(selectedModel?selectedModel.name:'')+' ('+(selectedVariant?selectedVariant.name:'')+'). Monthly RM'+Math.round(r.monthly).toLocaleString('en-MY')+'/bln utk '+currentTenure+' thn. Boleh consult?';
-  document.getElementById('waLinkLoan').href='https://wa.me/?text='+encodeURIComponent(msg);
+  document.getElementById('waLinkLoan').href='https://wa.me/60172393593?text='+encodeURIComponent(msg);
   var sal=parseFloat(document.getElementById('salaryInput').value)||0;
   document.getElementById('eligWarning').classList.toggle('show',sal>0&&r.monthly>sal*0.3);
   updateDpHint();
@@ -376,7 +416,7 @@ function eligOpen(id){
   var ch=Math.min.apply(null,m.variants.map(function(v){return v.price;}));
   var chm=eligMonthly(ch,eligYears);
   var el=eligCheck(ch,s,eligYears);
-  ct.innerHTML='<img class="detail-img" src="'+m.image+'" alt="'+m.name+'"><div class="detail-title">'+m.name+'</div><div class="detail-tagline">'+m.tagline+' • '+m.category+'</div><div class="detail-summary"><div class="summary-item"><div class="val">RM'+ch.toLocaleString('en-MY')+'</div><div class="lbl">Harga Bermula</div></div><div class="summary-item"><div class="val">RM'+chm.toLocaleString('en-MY',{minimumFractionDigits:2})+'</div><div class="lbl">Bayaran/Bulan ('+eligYears+'thn)</div></div><div class="summary-item"><div class="val">'+(el.eligible?'✅ LULUS':'❌ GAGAL')+'</div><div class="lbl">'+(el.eligible?'Anda Mampu!':'Min RM'+el.need.toLocaleString('en-MY')+'/bln')+'</div></div></div><div class="variants-title">💰 Harga & Bayaran Bulanan</div><table class="variants-table"><thead><tr><th>Varian</th><th>Harga</th><th style="text-align:right">Bulanan</th><th style="text-align:center">Status</th></tr></thead><tbody>'+vh+'</tbody></table><a href="https://wa.me/?text=Hai! Nak tahu lanjut tentang '+m.name+'. Boleh consult?" class="detail-cta" target="_blank">💬 Tanya Sales Advisor</a>';
+  ct.innerHTML='<img class="detail-img" src="'+m.image+'" alt="'+m.name+'"><div class="detail-title">'+m.name+'</div><div class="detail-tagline">'+m.tagline+' • '+m.category+'</div><div class="detail-summary"><div class="summary-item"><div class="val">RM'+ch.toLocaleString('en-MY')+'</div><div class="lbl">Harga Bermula</div></div><div class="summary-item"><div class="val">RM'+chm.toLocaleString('en-MY',{minimumFractionDigits:2})+'</div><div class="lbl">Bayaran/Bulan ('+eligYears+'thn)</div></div><div class="summary-item"><div class="val">'+(el.eligible?'✅ LULUS':'❌ GAGAL')+'</div><div class="lbl">'+(el.eligible?'Anda Mampu!':'Min RM'+el.need.toLocaleString('en-MY')+'/bln')+'</div></div></div><div class="variants-title">💰 Harga & Bayaran Bulanan</div><table class="variants-table"><thead><tr><th>Varian</th><th>Harga</th><th style="text-align:right">Bulanan</th><th style="text-align:center">Status</th></tr></thead><tbody>'+vh+'</tbody></table><a href="https://wa.me/60172393593?text=Hai! Nak tahu lanjut tentang '+m.name+'. Boleh consult?" class="detail-cta" target="_blank">💬 Tanya Sales Advisor</a>';
   panel.classList.add('open');
   ov.classList.add('open');
   eligRender();
