@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Proton Loan Calculator &amp; Semak Kelayakan</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#1a1a1a}
+.tab-bar{display:flex;background:#fff;border-bottom:2px solid #e5e5e5;position:sticky;top:0;z-index:50}
+.tab-btn{flex:1;padding:14px 10px;text-align:center;font-size:13px;font-weight:700;color:#888;cursor:pointer;border:none;background:0 0;border-bottom:3px solid transparent;transition:all .2s}
+.tab-btn.active{color:#0050A0;border-bottom-color:#0050A0}
+.tab-page{display:none}
+.tab-page.active{display:block}
+.header{background:linear-gradient(135deg,#0050A0,#003366);color:#fff;padding:24px 16px 20px;text-align:center}
+.header h1{font-size:20px;font-weight:700}
+.header p{font-size:13px;opacity:.85;margin-top:4px}
+.section{margin:16px}
+.section-title{font-size:14px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding:0 4px}
+.step-label{font-size:11px;font-weight:700;color:#0050A0;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.model-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.model-btn{background:#fff;border:2px solid #e5e5e5;border-radius:12px;padding:10px 6px 8px;text-align:center;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.model-btn:active{transform:scale(.96)}
+.model-btn img{width:100%;height:65px;object-fit:contain;display:block;margin-bottom:6px}
+.model-btn .name{font-size:13px;font-weight:700}
+.model-btn .price{font-size:11px;color:#888;margin-top:2px}
+.model-btn.selected{border-color:#0050A0;background:#f0f6ff;box-shadow:0 0 0 3px rgba(0,80,160,.15)}
+.model-btn .check{display:none;width:18px;height:18px;background:#0050A0;border-radius:50%;color:#fff;font-size:11px;line-height:18px;margin:0 auto 4px}
+.model-btn.selected .check{display:block}
+.selected-model{display:none;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);margin:0 16px;position:relative}
+.selected-model.show{display:block}
+.selected-model img{width:100%;height:160px;object-fit:cover;display:block;background:#f0f0f0}
+.selected-model .info{padding:14px 16px 16px}
+.selected-model .name{font-size:18px;font-weight:700}
+.selected-model .price-tag{font-size:14px;color:#0050A0;font-weight:600;margin-top:2px}
+.selected-model .change-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer}
+.form-section{display:none;background:#fff;border-radius:14px;padding:20px;margin:0 16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.form-section.show{display:block}
+.form-group{margin-bottom:16px}
+.form-group:last-child{margin-bottom:0}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#555;margin-bottom:6px}
+.input-wrap{display:flex;align-items:center;background:#f8f8f8;border:2px solid #e5e5e5;border-radius:10px;padding:0 14px;transition:border-color .2s}
+.input-wrap:focus-within{border-color:#0050A0}
+.input-wrap span.prefix{font-size:16px;font-weight:700;color:#999;margin-right:6px}
+.input-wrap span.suffix{font-size:13px;font-weight:600;color:#999;margin-left:6px}
+.input-wrap input{flex:1;border:none;background:0 0;font-size:16px;font-weight:600;padding:12px 0;outline:0;width:100%}
+.input-wrap select{flex:1;border:none;background:0 0;font-size:15px;font-weight:600;padding:12px 0;outline:0;width:100%;color:#1a1a1a;cursor:pointer;-webkit-appearance:none;appearance:none}
+.form-hint{font-size:11px;color:#aaa;margin-top:4px;padding-left:2px}
+.tenure-group{display:flex;gap:8px}
+.tenure-btn{flex:1;padding:12px;border:2px solid #e5e5e5;border-radius:10px;background:#fff;font-size:14px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:#888}
+.tenure-btn:active{transform:scale(.96)}
+.tenure-btn.active{border-color:#0050A0;background:#f0f6ff;color:#0050A0;box-shadow:0 0 0 3px rgba(0,80,160,.15)}
+.result-card{display:none;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);margin:16px}
+.result-card.show{display:block}
+.result-card .big{text-align:center;padding:20px;background:linear-gradient(135deg,#0050A0,#003366);color:#fff}
+.result-card .big .label{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:1px}
+.result-card .big .editable-monthly{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:4px}
+.result-card .big .editable-monthly .rm{font-size:18px;font-weight:600;opacity:.9}
+.result-card .big .editable-monthly input{width:120px;background:rgba(255,255,255,.95);border:none;border-radius:8px;font-size:40px;font-weight:800;text-align:center;color:#1a1a1a;padding:2px 8px;outline:2px solid rgba(255,255,255,.3)}
+.result-card .detail-grid{padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result-card .detail-item{text-align:center}
+.result-card .detail-item .val{font-size:18px;font-weight:700;color:#1a1a1a}
+.result-card .detail-item .lbl{font-size:11px;color:#888;margin-top:2px}
+.result-card .result-actions{padding:0 20px 16px;display:flex;gap:10px}
+.result-card .result-actions a{flex:1;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;text-align:center;text-decoration:none}
+.result-card .result-actions .btn-green{background:#25D366;color:#fff}
+.elig-warning{display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:10px 14px;margin:0 16px 16px;font-size:13px;color:#dc2626;font-weight:600;text-align:center}
+.elig-warning.show{display:block}
+#page-elig .salary-section{margin:-12px 16px 0;position:relative;z-index:2}
+#page-elig .salary-card{background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.1);padding:20px}
+#page-elig .salary-card label{display:block;font-size:.8rem;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+#page-elig .salary-input-wrap{display:flex;align-items:center;background:#f8f8f8;border:2px solid #e5e5e5;border-radius:10px;padding:4px 16px;transition:border-color .2s}
+#page-elig .salary-input-wrap:focus-within{border-color:#0050A0}
+#page-elig .salary-input-wrap span{font-size:1.4rem;font-weight:700;color:#999;margin-right:8px}
+#page-elig .salary-input-wrap input{flex:1;border:none;background:0 0;font-size:1.6rem;font-weight:700;padding:12px 0;outline:0;color:#1a1a1a;min-width:0}
+#page-elig .tenure-selector{display:flex;gap:8px;margin-top:12px}
+#page-elig .disclaimer{font-size:.7rem;color:#666;text-align:center;margin-top:10px;line-height:1.4}
+#page-elig .models-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;max-width:600px;margin:0 auto}
+#page-elig .model-card{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden;cursor:pointer;transition:all .2s;position:relative;border:2px solid transparent}
+#page-elig .model-card:active{transform:scale(.97)}
+#page-elig .model-card.pass{border-color:#16a34a}
+#page-elig .model-card.fail{border-color:transparent;opacity:.65}
+#page-elig .model-card.selected{border-color:#0050A0;box-shadow:0 0 0 3px rgba(0,80,160,.15)}
+#page-elig .model-img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f0f0f0;display:block;padding:12px}
+#page-elig .model-info{padding:10px 12px 12px}
+#page-elig .model-name{font-size:.9rem;font-weight:700}
+#page-elig .model-price{font-size:.75rem;color:#666;margin-top:2px}
+#page-elig .model-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;margin-top:6px}
+#page-elig .model-badge.lulus{background:#dcfce7;color:#16a34a}
+#page-elig .model-badge.gagal{background:#fee2e2;color:#dc2626}
+#page-elig .detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100}
+#page-elig .detail-overlay.open{display:block}
+#page-elig .detail-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;z-index:101;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);max-height:85vh;overflow-y:auto;padding-bottom:16px}
+#page-elig .detail-panel.open{transform:translateY(0)}
+#page-elig .detail-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:12px auto 0}
+#page-elig .detail-close{position:absolute;top:12px;right:16px;width:32px;height:32px;border:none;background:#f0f0f0;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666}
+#page-elig .detail-content{padding:16px 20px 20px}
+#page-elig .detail-img{width:100%;aspect-ratio:16/9;object-fit:contain;background:#f8f8f8;border-radius:10px;margin-bottom:16px}
+#page-elig .detail-title{font-size:1.3rem;font-weight:800;margin-bottom:4px}
+#page-elig .detail-tagline{font-size:.85rem;color:#666;margin-bottom:8px}
+#page-elig .detail-summary{display:flex;gap:12px;margin-bottom:16px}
+#page-elig .summary-item{flex:1;background:#f8f8f8;border-radius:10px;padding:10px;text-align:center}
+#page-elig .summary-item .val{font-size:1rem;font-weight:700;color:#0050A0}
+#page-elig .summary-item .lbl{font-size:.7rem;color:#666;margin-top:2px}
+#page-elig .variants-title{font-size:.85rem;font-weight:700;margin-bottom:8px;color:#666}
+#page-elig .variants-table{width:100%;border-collapse:collapse;font-size:.82rem}
+#page-elig .variants-table th{text-align:left;padding:8px 10px;font-size:.7rem;text-transform:uppercase;color:#666;border-bottom:2px solid #e5e5e5;font-weight:600}
+#page-elig .variants-table td{padding:10px;border-bottom:1px solid #e5e5e5}
+#page-elig .variant-name{font-weight:600}
+#page-elig .variant-monthly{font-weight:700;color:#0050A0;text-align:right}
+#page-elig .variant-status{text-align:center}
+#page-elig .detail-cta{display:block;width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;text-align:center;text-decoration:none;margin-top:16px}
+#page-elig .result-count{padding:8px 16px 0;font-size:.8rem;color:#666;max-width:600px;margin:0 auto}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{-moz-appearance:textfield}
+@media(min-width:600px){.model-grid{grid-template-columns:repeat(4,1fr);max-width:700px;margin:0 auto}
+.section,.form-section.show,.selected-model.show,.result-card.show,.elig-warning.show{max-width:600px;margin-left:auto;margin-right:auto}}
+@media(min-width:480px){#page-elig .models-grid{grid-template-columns:1fr 1fr 1fr}}
+/* Desktop popup for eligibility detail */
+@media(min-width:768px){#page-elig .detail-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.95);opacity:0;bottom:auto;right:auto;width:90%;max-width:1200px;max-height:85vh;border-radius:16px;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s;padding:0 0 16px}
+#page-elig .detail-panel.open{transform:translate(-50%,-50%) scale(1);opacity:1}
+#page-elig .detail-handle{display:none}}
+
+</style>
+</head>
+<body>
+<!-- HTML will be appended in next call -->
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('loan')">🚗 Loan Calculator</button>
+  <button class="tab-btn" onclick="switchTab('elig')">✅ Semak Kelayakan</button>
+</div>
+
+<div class="tab-page active" id="page-loan">
+<div class="header"><h1>🚗 Proton Loan Calculator</h1><p>Kira anggaran bayaran bulanan ikut model & varian</p></div>
+<div class="section" id="stepModel"><div class="step-label">Langkah 1</div><div class="section-title">Pilih Model Proton</div><div class="model-grid" id="modelGrid"></div></div>
+<div class="selected-model" id="selectedModel"><button class="change-btn" onclick="resetModel()">✕ Tukar</button><img id="selectedImg" src="" alt=""><div class="info"><div class="name" id="selectedName"></div><div class="price-tag" id="selectedPrice"></div></div></div>
+<div class="form-section" id="formSection">
+<div class="step-label">Langkah 2</div><div class="section-title" style="margin-bottom:16px">Masukkan Butiran</div>
+<div class="form-group"><label>🚗 Pilih Varian</label><div class="input-wrap"><select id="variantSelect" onchange="onVariantChange()"></select></div></div>
+<div class="form-group"><label>💰 Harga Kereta</label><div class="input-wrap"><span class="prefix">RM</span><input type="number" id="priceInput" oninput="onPriceEdit()"></div></div>
+<div class="form-group"><label>📆 Tempoh Pinjaman</label><div class="tenure-group"><button class="tenure-btn" data-years="5">5 Tahun</button><button class="tenure-btn active" data-years="7">7 Tahun</button><button class="tenure-btn" data-years="9">9 Tahun</button></div></div>
+<div class="form-group"><label>🏦 Gaji Bulanan (opsyenal)</label><div class="input-wrap"><span class="prefix">RM</span><input type="number" id="salaryInput" placeholder="0"></div></div>
+<div class="form-group"><label>💵 Downpayment (Deposit)</label><div class="input-wrap"><span class="prefix">RM</span><input type="number" id="dpInput" placeholder="0"></div><div class="form-hint">Minimum 10% = <span id="dpMinHint">RM0</span>. <span style="color:#0050A0;font-weight:600;cursor:pointer" onclick="setMinDP()">Guna minimum</span></div></div>
+<div class="form-group"><label>📊 Interest Rate (% setahun)</label><div class="input-wrap"><input type="number" id="rateInput" value="3.0" min="0" max="10" step="0.1" style="text-align:center"><span class="suffix">%</span></div><div class="form-hint">Kebiasaan bank: 3.0% – 4.5% flat rate</div></div>
+</div>
+<div class="result-card" id="resultCard">
+<div class="big"><div class="label">Bayaran Bulanan</div><div class="editable-monthly"><span class="rm">RM</span><input type="number" id="monthlyInput" value="0" oninput="onMonthlyEdit()"><span class="bln">/bln</span></div><div class="detail">Proton — <span id="resultVariant">-</span> • <span id="resultTenure">7</span> tahun</div></div>
+<div class="detail-grid"><div class="detail-item"><div class="val" id="rPrice">RM0</div><div class="lbl">Harga Kereta</div></div><div class="detail-item"><div class="val" id="rLoan">RM0</div><div class="lbl">Jumlah Pinjaman</div></div><div class="detail-item"><div class="val" id="rInterest">RM0</div><div class="lbl">Jumlah Faedah</div></div><div class="detail-item"><div class="val" id="rDP">RM0</div><div class="lbl">Downpayment</div></div><div class="detail-item"><div class="val" id="rRate">3.0%</div><div class="lbl">Interest Rate</div></div><div class="detail-item"><div class="val" id="rTenure">7 thn</div><div class="lbl">Tempoh</div></div></div>
+<div class="result-actions"><a class="btn-green" id="waLinkLoan" target="_blank">💬 WhatsApp Sales Advisor</a></div></div>
+<div class="elig-warning" id="eligWarning">⚠️ Bayaran bulanan melebihi 30% gaji. Sila naikkan downpayment.</div>
+</div>
+
+<div class="tab-page" id="page-elig">
+<div class="header"><h1>🚗 Kereta Sesuai Ikut Gaji</h1><p>Masukkan gaji bersih & semak model Proton yang anda mampu</p></div>
+<div class="salary-section"><div class="salary-card"><label>Gaji Bersih Anda</label><div class="salary-input-wrap"><span>RM</span><input type="number" id="eligSalaryInput" placeholder="cth: 3000" min="1000" max="50000" step="100"></div><div class="tenure-selector"><button class="tenure-btn" data-years="5">5 Tahun</button><button class="tenure-btn active" data-years="7">7 Tahun</button><button class="tenure-btn" data-years="9">9 Tahun</button></div><div class="disclaimer">Anggaran sahaja. Tertakluk kepada penilaian kredit bank.</div></div></div>
+<div id="eligResultCount" class="result-count"></div><div class="models-grid" id="eligModelsGrid"></div>
+<div class="detail-overlay" id="eligOverlay"></div><div class="detail-panel" id="eligPanel"><div class="detail-handle"></div><button class="detail-close" id="eligClose">✕</button><div class="detail-content" id="eligDetailContent"></div></div>
+</div>
+
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-page').forEach(function(p){p.classList.remove('active');});
+  if (tab === 'loan') {
+    document.querySelector('.tab-btn').classList.add('active');
+    document.getElementById('page-loan').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('page-elig').classList.add('active');
+  }
+}
+
+var MODELS = [
+  {id:'saga',name:'Saga',priceFrom:34800,priceTo:45800,img:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',variants:[{name:'1.3L Standard MT',price:34800},{name:'1.3L Standard AT',price:36800},{name:'1.3L Premium AT',price:39800},{name:'1.3L Premium S AT',price:42800},{name:'1.3L Ace AT',price:45800}]},
+  {id:'persona',name:'Persona',priceFrom:47800,priceTo:59800,img:'https://cms-assets.proton.com/proton-cms-blob/media/xvldb2h0/model-persona.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/v3xnuirg/proton_persona_1440x640.jpg',variants:[{name:'1.6L Standard CVT',price:47800},{name:'1.6L Executive CVT',price:51800},{name:'1.6L Premium CVT',price:55800},{name:'1.6L Premium S CVT',price:59800}]},
+  {id:'iriz',name:'Iriz',priceFrom:40800,priceTo:50800,img:'https://cms-assets.proton.com/proton-cms-blob/media/iqalhsmy/model-iriz.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/3jvfz3zg/proton_iriz_1440x640.jpg',variants:[{name:'1.3L Standard CVT',price:40800},{name:'1.3L Executive CVT',price:44800},{name:'1.3L Premium CVT',price:48800},{name:'1.3L Active CVT',price:50800}]},
+  {id:'s70',name:'S70',priceFrom:73800,priceTo:89800,img:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',variants:[{name:'1.5T Executive',price:73800},{name:'1.5T Premium',price:79800},{name:'1.5T Flagship',price:84800},{name:'1.5T Flagship X',price:89800}]},
+  {id:'x50',name:'X50',priceFrom:86800,priceTo:113300,img:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',variants:[{name:'1.5T Standard',price:86800},{name:'1.5T Executive',price:93800},{name:'1.5T Premium',price:101800},{name:'1.5T Flagship',price:113300}]},
+  {id:'x70',name:'X70',priceFrom:98800,priceTo:128800,img:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',variants:[{name:'1.5T Standard',price:98800},{name:'1.5T Executive',price:108800},{name:'1.5T Premium',price:118800},{name:'1.5T Premium X',price:128800}]},
+  {id:'x90',name:'X90',priceFrom:123800,priceTo:143800,img:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',hero:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',variants:[{name:'1.5T Standard',price:123800},{name:'1.5T Executive',price:130800},{name:'1.5T Premium',price:138800},{name:'1.5T Flagship',price:143800}]}
+];
+
+var ELIG_MODELS = [
+  {id:'saga',name:'Proton Saga',tagline:'SMART. SAFE. SEDAN.',category:'Compact Sedan',priceFrom:34800,priceTo:45800,image:'https://cms-assets.proton.com/proton-cms-blob/media/doifiaub/proton_saga_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/yileabdk/model-saga_360x200.png',variants:[{name:'1.3L Standard MT',price:34800},{name:'1.3L Standard AT',price:36800},{name:'1.3L Premium AT',price:39800},{name:'1.3L Premium S AT',price:42800},{name:'1.3L Ace AT',price:45800}]},
+  {id:'persona',name:'Proton Persona',tagline:'PERFECT COMPANION',category:'Sedan',priceFrom:47800,priceTo:59800,image:'https://cms-assets.proton.com/proton-cms-blob/media/v3xnuirg/proton_persona_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/xvldb2h0/model-persona.png',variants:[{name:'1.6L Standard CVT',price:47800},{name:'1.6L Executive CVT',price:51800},{name:'1.6L Premium CVT',price:55800},{name:'1.6L Premium S CVT',price:59800}]},
+  {id:'iriz',name:'Proton Iriz',tagline:'DYNAMIC HATCHBACK',category:'Hatchback',priceFrom:40800,priceTo:50800,image:'https://cms-assets.proton.com/proton-cms-blob/media/3jvfz3zg/proton_iriz_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/iqalhsmy/model-iriz.png',variants:[{name:'1.3L Standard CVT',price:40800},{name:'1.3L Executive CVT',price:44800},{name:'1.3L Premium CVT',price:48800},{name:'1.3L Active CVT',price:50800}]},
+  {id:'s70',name:'Proton S70',tagline:'INTELLIGENT EXECUTIVE SEDAN',category:'Sedan',priceFrom:73800,priceTo:89800,image:'https://cms-assets.proton.com/proton-cms-blob/media/ldlbs4ok/proton_s70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/pwtfsjvq/model-s70.png',variants:[{name:'1.5T Executive',price:73800},{name:'1.5T Premium',price:79800},{name:'1.5T Flagship',price:84800},{name:'1.5T Flagship X',price:89800}]},
+  {id:'x50',name:'Proton X50',tagline:'BOLD. SMART. SUV.',category:'SUV',priceFrom:86800,priceTo:113300,image:'https://cms-assets.proton.com/proton-cms-blob/media/ppcpmajc/proton_x50_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/wxaip352/model-x50-01-copy.png',variants:[{name:'1.5T Standard',price:86800},{name:'1.5T Executive',price:93800},{name:'1.5T Premium',price:101800},{name:'1.5T Flagship',price:113300}]},
+  {id:'x70',name:'Proton X70',tagline:'PREMIUM SUV',category:'SUV',priceFrom:98800,priceTo:128800,image:'https://cms-assets.proton.com/proton-cms-blob/media/idib4l2a/proton_x70_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/e3jm4grp/model-x70.png',variants:[{name:'1.5T Standard',price:98800},{name:'1.5T Executive',price:108800},{name:'1.5T Premium',price:118800},{name:'1.5T Premium X',price:128800}]},
+  {id:'x90',name:'Proton X90',tagline:'PREMIUM 7-SEATER SUV',category:'SUV 7-Seater',priceFrom:123800,priceTo:143800,image:'https://cms-assets.proton.com/proton-cms-blob/media/jyugkd0x/proton_x90_1440x640.jpg',thumb:'https://cms-assets.proton.com/proton-cms-blob/media/xcxpvkh5/model-x90.png',variants:[{name:'1.5T Standard',price:123800},{name:'1.5T Executive',price:130800},{name:'1.5T Premium',price:138800},{name:'1.5T Flagship',price:143800}]}
+];
+
+var selectedModel=null,selectedVariant=null,currentTenure=7,isUserEditingMonthly=false;
+
+function calcLoan(price,dp,rate,years){
+  var loan=price-dp;
+  if(loan<=0) return {loanAmount:0,totalInterest:0,totalPayment:0,monthly:0};
+  var interest=loan*(rate/100)*years;
+  var total=loan+interest;
+  return {loanAmount:loan,totalInterest:interest,totalPayment:total,monthly:total/(years*12)};
+}
+
+function calcDPFromMonthly(target,price,rate,years){
+  var months=years*12;
+  var factor=1+(rate/100)*years;
+  return Math.max(Math.round(price-(target*months)/factor),0);
+}
+
+function getInputs(){
+  return {
+    price:parseFloat(document.getElementById('priceInput').value)||0,
+    dp:parseFloat(document.getElementById('dpInput').value)||0,
+    rate:parseFloat(document.getElementById('rateInput').value)||3.0
+  };
+}
+
+function updateAll(){
+  var inp=getInputs();
+  var r=calcLoan(inp.price,inp.dp,inp.rate,currentTenure);
+  if(!isUserEditingMonthly) document.getElementById('monthlyInput').value=Math.round(r.monthly);
+  document.getElementById('resultVariant').textContent=selectedVariant?selectedVariant.name:'-';
+  document.getElementById('resultTenure').textContent=currentTenure;
+  document.getElementById('rPrice').textContent='RM'+inp.price.toLocaleString('en-MY');
+  document.getElementById('rLoan').textContent='RM'+Math.round(r.loanAmount).toLocaleString('en-MY');
+  document.getElementById('rInterest').textContent='RM'+Math.round(r.totalInterest).toLocaleString('en-MY');
+  document.getElementById('rDP').textContent='RM'+inp.dp.toLocaleString('en-MY');
+  document.getElementById('rRate').textContent=inp.rate+'%';
+  document.getElementById('rTenure').textContent=currentTenure+' thn';
+  var msg='Hi, nak tanya pasal Proton '+(selectedModel?selectedModel.name:'')+' ('+(selectedVariant?selectedVariant.name:'')+'). Monthly RM'+Math.round(r.monthly).toLocaleString('en-MY')+'/bln utk '+currentTenure+' thn. Boleh consult?';
+  document.getElementById('waLinkLoan').href='https://wa.me/?text='+encodeURIComponent(msg);
+  var sal=parseFloat(document.getElementById('salaryInput').value)||0;
+  document.getElementById('eligWarning').classList.toggle('show',sal>0&&r.monthly>sal*0.3);
+  updateDpHint();
+}
+
+function onMonthlyEdit(){
+  var t=parseFloat(document.getElementById('monthlyInput').value);
+  if(!t||t<=0)return;
+  isUserEditingMonthly=true;
+  var inp=getInputs();
+  var nd=calcDPFromMonthly(t,inp.price,inp.rate,currentTenure);
+  var mn=Math.round(inp.price*0.1);
+  document.getElementById('dpInput').value=nd>=mn?nd:mn;
+  updateAll();
+  isUserEditingMonthly=false;
+}
+
+function setMinDP(){
+  var p=getInputs().price;
+  if(!p)return;
+  document.getElementById('dpInput').value=Math.round(p*0.1);
+  updateAll();
+}
+
+function updateDpHint(){
+  var p=getInputs().price;
+  if(!p)return;
+  document.getElementById('dpMinHint').textContent='RM'+Math.round(p*0.1).toLocaleString('en-MY');
+}
+
+function renderModels(){
+  var g=document.getElementById('modelGrid');
+  MODELS.forEach(function(m){
+    var d=document.createElement('div');
+    d.className='model-btn';
+    d.dataset.id=m.id;
+    d.innerHTML='<div class="check">✓</div><img src="'+m.img+'" alt="'+m.name+'" loading="lazy" onerror="this.style.display=\'none\'"><div class="name">'+m.name+'</div><div class="price">RM'+m.priceFrom.toLocaleString()+' – RM'+m.priceTo.toLocaleString()+'</div>';
+    d.onclick=function(){selectModel(m.id);};
+    g.appendChild(d);
+  });
+}
+
+function selectModel(id){
+  selectedModel=MODELS.find(function(m){return m.id===id;});
+  if(!selectedModel)return;
+  document.querySelectorAll('.model-btn').forEach(function(b){b.classList.toggle('selected',b.dataset.id===id);});
+  var sm=document.getElementById('selectedModel');
+  document.getElementById('selectedImg').src=selectedModel.hero;
+  document.getElementById('selectedName').textContent='Proton '+selectedModel.name;
+  document.getElementById('selectedPrice').textContent='RM'+selectedModel.priceFrom.toLocaleString()+' – RM'+selectedModel.priceTo.toLocaleString();
+  sm.classList.add('show');
+  var vs=document.getElementById('variantSelect');
+  vs.innerHTML='';
+  selectedModel.variants.forEach(function(v,i){
+    var o=document.createElement('option');
+    o.value=i;
+    o.textContent=v.name+' — RM'+v.price.toLocaleString();
+    vs.appendChild(o);
+  });
+  selectedVariant=selectedModel.variants[0];
+  document.getElementById('priceInput').value=selectedVariant.price;
+  vs.selectedIndex=0;
+  document.getElementById('formSection').classList.add('show');
+  document.getElementById('resultCard').classList.add('show');
+  document.getElementById('eligWarning').classList.remove('show');
+  document.getElementById('dpInput').value=Math.round(selectedVariant.price*0.1);
+  updateAll();
+  setTimeout(function(){sm.scrollIntoView({behavior:'smooth',block:'center'});},100);
+}
+
+function onVariantChange(){
+  if(!selectedModel)return;
+  selectedVariant=selectedModel.variants[parseInt(document.getElementById('variantSelect').value)];
+  document.getElementById('priceInput').value=selectedVariant.price;
+  document.getElementById('dpInput').value=Math.round(selectedVariant.price*0.1);
+  updateAll();
+}
+function onPriceEdit(){
+  if(!selectedModel)return;
+  selectedVariant.price=parseInt(document.getElementById('priceInput').value)||selectedVariant.price;
+  updateAll();
+}
+
+function resetModel(){
+  selectedModel=null;selectedVariant=null;
+  document.getElementById('selectedModel').classList.remove('show');
+  document.getElementById('formSection').classList.remove('show');
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('eligWarning').classList.remove('show');
+  document.querySelectorAll('.model-btn').forEach(function(b){b.classList.remove('selected');});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+var ELIG_INTEREST=3.0,ELIG_DSR=0.3,eligSelected=null,eligSalary=null,eligYears=7;
+
+function eligMonthly(price,years){
+  var dp=price*0.1;
+  var loan=price-dp;
+  var interest=loan*(ELIG_INTEREST/100)*years;
+  return (loan+interest)/(years*12);
+}
+
+function eligCheck(price,salary,years){
+  if(!salary||salary<500)return{eligible:false,monthly:0,need:0};
+  var m=eligMonthly(price,years);
+  var ok=m<=salary*ELIG_DSR;
+  return{eligible:ok,monthly:m,need:Math.ceil(m/ELIG_DSR/100)*100};
+}
+
+function eligRender(){
+  var s=parseInt(document.getElementById('eligSalaryInput').value)||0;
+  eligSalary=s;
+  var g=document.getElementById('eligModelsGrid');
+  var rc=document.getElementById('eligResultCount');
+  var pass=0,h='';
+  ELIG_MODELS.forEach(function(m){
+    var el=eligCheck(Math.min.apply(null,m.variants.map(function(v){return v.price;})),s,eligYears);
+    var isP=el.eligible;
+    if(isP)pass++;
+    var vr=m.variants.map(function(v){return eligCheck(v.price,s,eligYears);});
+    var pv=vr.filter(function(r){return r.eligible;}).length;
+    var cls=isP?'model-card pass':'model-card fail';
+    h+='<div class="'+cls+' '+(eligSelected===m.id?'selected':'')+'" onclick="eligOpen(\''+m.id+'\')"><img class="model-img" src="'+m.thumb+'" alt="'+m.name+'" loading="lazy" onerror="this.style.display=\'none\'"><div class="model-info"><div class="model-name">'+m.name+'</div><div class="model-price">RM'+m.priceFrom.toLocaleString('en-MY')+' – RM'+m.priceTo.toLocaleString('en-MY')+'</div><div class="model-badge '+(isP?'lulus':'gagal')+'">'+(isP?'✅ LULUS '+pv+'/'+m.variants.length+' varian':'❌ GAGAL')+'</div></div></div>';
+  });
+  g.innerHTML=h;
+  if(s>=500)rc.textContent=pass+' model LULUS • '+(ELIG_MODELS.length-pass)+' model GAGAL';
+  else rc.textContent='';
+}
+
+function eligOpen(id){
+  eligSelected=id;
+  var m=ELIG_MODELS.find(function(x){return x.id===id;});
+  if(!m)return;
+  var s=eligSalary||0;
+  var panel=document.getElementById('eligPanel');
+  var ov=document.getElementById('eligOverlay');
+  var ct=document.getElementById('eligDetailContent');
+  var vh='';
+  m.variants.forEach(function(v){
+    var el=eligCheck(v.price,s,eligYears);
+    var mn=eligMonthly(v.price,eligYears);
+    vh+='<tr><td class="variant-name">'+v.name+'</td><td>RM'+v.price.toLocaleString('en-MY')+'</td><td class="variant-monthly">RM'+mn.toLocaleString('en-MY',{minimumFractionDigits:2})+'/bln</td><td class="variant-status">'+(el.eligible?'✅':'❌')+'</td></tr>';
+  });
+  var ch=Math.min.apply(null,m.variants.map(function(v){return v.price;}));
+  var chm=eligMonthly(ch,eligYears);
+  var el=eligCheck(ch,s,eligYears);
+  ct.innerHTML='<img class="detail-img" src="'+m.image+'" alt="'+m.name+'"><div class="detail-title">'+m.name+'</div><div class="detail-tagline">'+m.tagline+' • '+m.category+'</div><div class="detail-summary"><div class="summary-item"><div class="val">RM'+ch.toLocaleString('en-MY')+'</div><div class="lbl">Harga Bermula</div></div><div class="summary-item"><div class="val">RM'+chm.toLocaleString('en-MY',{minimumFractionDigits:2})+'</div><div class="lbl">Bayaran/Bulan ('+eligYears+'thn)</div></div><div class="summary-item"><div class="val">'+(el.eligible?'✅ LULUS':'❌ GAGAL')+'</div><div class="lbl">'+(el.eligible?'Anda Mampu!':'Min RM'+el.need.toLocaleString('en-MY')+'/bln')+'</div></div></div><div class="variants-title">💰 Harga & Bayaran Bulanan</div><table class="variants-table"><thead><tr><th>Varian</th><th>Harga</th><th style="text-align:right">Bulanan</th><th style="text-align:center">Status</th></tr></thead><tbody>'+vh+'</tbody></table><a href="https://wa.me/?text=Hai! Nak tahu lanjut tentang '+m.name+'. Boleh consult?" class="detail-cta" target="_blank">💬 Tanya Sales Advisor</a>';
+  panel.classList.add('open');
+  ov.classList.add('open');
+  eligRender();
+}
+
+function eligClose(){
+  document.getElementById('eligPanel').classList.remove('open');
+  document.getElementById('eligOverlay').classList.remove('open');
+  eligSelected=null;
+  eligRender();
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  renderModels();
+  document.querySelectorAll('#page-loan .tenure-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#page-loan .tenure-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      currentTenure=parseInt(b.dataset.years);
+      updateAll();
+    });
+  });
+  document.querySelectorAll('#formSection input, #formSection select').forEach(function(el){
+    el.addEventListener('input',updateAll);
+    el.addEventListener('change',updateAll);
+  });
+  var tmr;
+  document.getElementById('eligSalaryInput').addEventListener('input',function(){
+    clearTimeout(tmr);
+    tmr=setTimeout(eligRender,200);
+  });
+  document.querySelectorAll('#page-elig .tenure-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#page-elig .tenure-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      eligYears=parseInt(b.dataset.years);
+      eligRender();
+    });
+  });
+  document.getElementById('eligClose').addEventListener('click',eligClose);
+  document.getElementById('eligOverlay').addEventListener('click',eligClose);
+  eligRender();
+});
+</script>
+
+</body>
+</html>
